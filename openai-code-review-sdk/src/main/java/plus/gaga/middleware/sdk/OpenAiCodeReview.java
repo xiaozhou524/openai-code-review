@@ -53,7 +53,7 @@ public class OpenAiCodeReview {
         connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
         connection.setDoOutput(true);
 
-        String jsonInpuString = "{"
+	    String jsonInpuString = "{"
                 + "\"model\":\"glm-4-flash\","
                 + "\"messages\": ["
                 + "    {"
@@ -69,7 +69,7 @@ public class OpenAiCodeReview {
         }
 
         int responseCode = connection.getResponseCode();
-//        System.out.println(responseCode);
+//		System.out.println(responseCode);
 
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String inputLine;
@@ -82,11 +82,11 @@ public class OpenAiCodeReview {
         in.close();
         connection.disconnect();
 
-//        System.out.println(content);
+//		System.out.println(content);
 
         ChatCompletionSyncResponse response = JSON.parseObject(content.toString(), ChatCompletionSyncResponse.class);
 //        System.out.println(response.getChoices().get(0).getMessage().getContent());
-        return  response.getChoices().get(0).getMessage().getContent();
+        return response.getChoices().get(0).getMessage().getContent();
     }
 
 }

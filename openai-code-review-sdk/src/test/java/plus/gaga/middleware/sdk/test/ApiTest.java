@@ -54,7 +54,7 @@ public class ApiTest {
 		}
 
 		int responseCode = connection.getResponseCode();
-		System.out.println(responseCode);
+//		System.out.println(responseCode);
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		String inputLine;
@@ -67,7 +67,7 @@ public class ApiTest {
 		in.close();
 		connection.disconnect();
 
-		System.out.println(content);
+//		System.out.println(content);
 
 		ChatCompletionSyncResponse response = JSON.parseObject(content.toString(), ChatCompletionSyncResponse.class);
 		System.out.println(response.getChoices().get(0).getMessage().getContent());
