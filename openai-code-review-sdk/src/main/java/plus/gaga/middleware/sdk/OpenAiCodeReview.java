@@ -2,7 +2,6 @@ package plus.gaga.middleware.sdk;
 
 import com.alibaba.fastjson2.JSON;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import plus.gaga.middleware.sdk.domain.model.ChatCompletionRequest;
 import plus.gaga.middleware.sdk.domain.model.ChatCompletionSyncResponse;
@@ -11,8 +10,6 @@ import plus.gaga.middleware.sdk.types.utils.BearerTokenUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -24,9 +21,10 @@ public class OpenAiCodeReview {
 
 	public static void main(String[] args) throws Exception {
 		System.out.println("openai 代码评审，测试执行");
-		String githubToken = System.getenv("GITHUB_TOKEN");
-		if (githubToken == null || githubToken.isEmpty()) {
-			throw new RuntimeException("githubToken is null");
+
+		String token = System.getenv("GITHUB_TOKEN");
+		if (token == null || token.isEmpty()) {
+			throw new RuntimeException("token is null");
 		}
 
 		// 1. 代码检出
@@ -53,7 +51,7 @@ public class OpenAiCodeReview {
 		System.out.println("code review:" + log);
 
 		// 3. 写入评审日志
-		String logUrl = writeLog(githubToken, log);
+		String logUrl = writeLog(token, log);
 		System.out.println("writeLog:" + logUrl);
 	}
 
@@ -123,8 +121,10 @@ public class OpenAiCodeReview {
 		}
 
 		git.add().addFilepattern(dateFolderName + "/" + fileName).call();
-		git.commit().setMessage("Add new file").call();
-		git.push().setCredentialsProvider(new UsernamePasswordCredentialsProvider(token, ""));
+		git.commit().setMessage("Add new file via GitHub Actions").call();
+		git.push().setCredentialsProvider(new UsernamePasswordCredentialsProvider(token, "")).call();
+
+		System.out.println("Changes have been pushed to the repository.");
 
 		return "https://github.com/xiaozhou524/openai-code-review-log/blob/master/" + dateFolderName + "/" + fileName;
 	}
