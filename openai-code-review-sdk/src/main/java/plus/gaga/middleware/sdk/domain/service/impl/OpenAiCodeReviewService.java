@@ -20,23 +20,14 @@ public class OpenAiCodeReviewService extends AbstractOpenAiCodeReviewService {
 	}
 
 	@Override
-	protected void pushMessage(String logUrl) throws Exception {
-		Map<String, Map<String, String>> data = new HashMap<>();
-		TemplateMessageDTO.put(data, TemplateMessageDTO.TemplateKey.REPO_NAME, gitCommand.getProject());
-		TemplateMessageDTO.put(data, TemplateMessageDTO.TemplateKey.BRANCH_NAME, gitCommand.getBranch());
-		TemplateMessageDTO.put(data, TemplateMessageDTO.TemplateKey.COMMIT_AUTHOR, gitCommand.getAuthor());
-		TemplateMessageDTO.put(data, TemplateMessageDTO.TemplateKey.COMMIT_MESSAGE, gitCommand.getMessage());
-
-		weiXin.sendTemplateMessage(logUrl, data);
-	}
-
-	@Override
-	protected String recordCodeReview(String recommend) throws Exception {
-		return gitCommand.commitAndPush(recommend);
+	protected String getDiffCode() {
+		// 1. 获取提交代码
+		return gitCommand.diff();
 	}
 
 	@Override
 	protected String codeReview(String diffCode) throws Exception {
+		// 2. 开始评审代码
 		ChatCompletionRequestDTO chatCompletionRequestDTO = new ChatCompletionRequestDTO();
 		chatCompletionRequestDTO.setModel(Model.GLM_4_FLASH.getCode());
 		chatCompletionRequestDTO.setMessages(new ArrayList<ChatCompletionRequestDTO.Prompt>() {
@@ -52,7 +43,20 @@ public class OpenAiCodeReviewService extends AbstractOpenAiCodeReviewService {
 	}
 
 	@Override
-	protected String getDiffCode() {
-		return gitCommand.diff();
+	protected String recordCodeReview(String recommend) throws Exception {
+		// 3. 记录评审结果：返回日志地址
+		return gitCommand.commitAndPush(recommend);
+	}
+
+	@Override
+	protected void pushMessage(String logUrl) throws Exception {
+		// 4. 发送消息通知：日志地址、通知的内容
+		Map<String, Map<String, String>> data = new HashMap<>();
+		TemplateMessageDTO.put(data, TemplateMessageDTO.TemplateKey.REPO_NAME, gitCommand.getProject());
+		TemplateMessageDTO.put(data, TemplateMessageDTO.TemplateKey.BRANCH_NAME, gitCommand.getBranch());
+		TemplateMessageDTO.put(data, TemplateMessageDTO.TemplateKey.COMMIT_AUTHOR, gitCommand.getAuthor());
+		TemplateMessageDTO.put(data, TemplateMessageDTO.TemplateKey.COMMIT_MESSAGE, gitCommand.getMessage());
+
+		weiXin.sendTemplateMessage(logUrl, data);
 	}
 }

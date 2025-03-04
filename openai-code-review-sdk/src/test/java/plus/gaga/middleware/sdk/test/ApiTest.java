@@ -92,7 +92,7 @@ public class ApiTest {
 
 	public static class Message {
 		private String touser = "oDpQ56ZbL9XtcK9BUmQfsVpU3g8M";
-		private String template_id = "gNHicdhw-z74M2q_Vb64KcTbZOfA9kr9vpi5rX7VKdE";
+		private String template_id = "sjLWIJLKlKD9cllAijczFNtEMIRqGpAnvIdHOXlemlw";
 		private String url = "https://github.com/xiaozhou524/openai-code-review-log/blob/main/2025-03-03/Y8LNSZqYaaFt.md";
 		private Map<String, Map<String, String>> data = new HashMap<>();
 
