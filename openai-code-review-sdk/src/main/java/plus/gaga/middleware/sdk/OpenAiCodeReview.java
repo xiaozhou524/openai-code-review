@@ -48,15 +48,6 @@ public class OpenAiCodeReview {
 	private String github_author;
 
 	public static void main(String[] args) throws Exception {
-		GitCommand gitCommand = new GitCommand(
-//				getEnv("GITHUB_REVIEW_LOG_URI"),
-				getEnv("CODE_TOKEN"),
-				getEnv("COMMIT_PROJECT"),
-				getEnv("COMMIT_BRANCH"),
-				getEnv("COMMIT_AUTHOR"),
-				getEnv("COMMIT_MESSAGE"),
-				getEnv("COMMIT_MESSAGE")
-		);
 
 		WeiXin weiXin = new WeiXin(
 				getEnv("WEIXIN_APPID"),
@@ -64,6 +55,17 @@ public class OpenAiCodeReview {
 				getEnv("WEIXIN_TOUSER"),
 				getEnv("WEIXIN_TEMPLATE_ID")
 		);
+
+		GitCommand gitCommand = new GitCommand(
+				getEnv("GITHUB_REVIEW_LOG_URI"),
+				getEnv("GITHUB_TOKEN"),
+				getEnv("COMMIT_PROJECT"),
+				getEnv("COMMIT_BRANCH"),
+				getEnv("COMMIT_AUTHOR"),
+				getEnv("COMMIT_MESSAGE")
+		);
+
+
 
 		IOpenAI openAI = new ChatGLM(
 				getEnv("CHATGLM_AIPHOST"),
