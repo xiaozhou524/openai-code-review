@@ -1,29 +1,12 @@
 package plus.gaga.middleware.sdk;
 
-import com.alibaba.fastjson2.JSON;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import plus.gaga.middleware.sdk.domain.service.IOpenAiCodeReviewService;
 import plus.gaga.middleware.sdk.domain.service.impl.OpenAiCodeReviewService;
 import plus.gaga.middleware.sdk.infrastructure.git.GitCommand;
 import plus.gaga.middleware.sdk.infrastructure.openai.IOpenAI;
-import plus.gaga.middleware.sdk.infrastructure.openai.dto.ChatCompletionRequestDTO;
-import plus.gaga.middleware.sdk.infrastructure.openai.dto.ChatCompletionSyncResponseDTO;
-import plus.gaga.middleware.sdk.domain.model.Model;
-import plus.gaga.middleware.sdk.infrastructure.openai.impl.ChatGLM;
 import plus.gaga.middleware.sdk.infrastructure.openai.impl.DeepSeekClient;
 import plus.gaga.middleware.sdk.infrastructure.weixin.WeiXin;
-import plus.gaga.middleware.sdk.types.utils.BearerTokenUtils;
-import plus.gaga.middleware.sdk.types.utils.WXAccessTokenUtils;
-
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 public class OpenAiCodeReview {
 
@@ -59,16 +42,6 @@ public class OpenAiCodeReview {
 				getEnv("COMMIT_MESSAGE")
 		);
 
-//		IOpenAI openAI = new ChatGLM(
-//				getEnv("CHATGLM_APIHOST"),
-//				getEnv("CHATGLM_APIKEYSECRET")
-//		);
-
-		IOpenAI DeepSeek = new DeepSeekClient(
-				"https://api.deepseek.com/chat/completions",
-				"sk-39a453e30a36490c9e9b734b72b20a26"
-		);
-
 		WeiXin weiXin = new WeiXin(
 				getEnv("WEIXIN_APPID"),
 				getEnv("WEIXIN_SECRET"),
@@ -76,7 +49,20 @@ public class OpenAiCodeReview {
 				getEnv("WEIXIN_TEMPLATE_ID")
 		);
 
+		// 使用ChatGLM接口
+//		IOpenAI openAI = new ChatGLM(
+//				getEnv("CHATGLM_APIHOST"),
+//				getEnv("CHATGLM_APIKEYSECRET")
+//		);
+//		OpenAiCodeReviewService openAiCodeReviewService = new OpenAiCodeReviewService(gitCommand, openAI, weiXin);
+
+		// 使用deepseek接口
+		IOpenAI DeepSeek = new DeepSeekClient(
+				"https://api.deepseek.com/chat/completions",
+				"sk-39a453e30a36490c9e9b734b72b20a26"
+		);
 		OpenAiCodeReviewService openAiCodeReviewService = new OpenAiCodeReviewService(gitCommand, DeepSeek, weiXin);
+
 		openAiCodeReviewService.exec();
 
 		logger.info("openai-code-review done!");
