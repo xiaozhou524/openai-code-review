@@ -88,7 +88,7 @@ public class GitCommand {
 
 		// 提交内容
 		git.add().addFilepattern(dateFolderName + "/" + fileName).call();
-		git.commit().setMessage("Add new file via GitHub Actions").call();
+		git.commit().setMessage("add code review new file" + fileName).call();
 		git.push().setCredentialsProvider(new UsernamePasswordCredentialsProvider(githubToken, "")).call();
 
 		logger.info("openao-code-review git commit and push done! {}", fileName);

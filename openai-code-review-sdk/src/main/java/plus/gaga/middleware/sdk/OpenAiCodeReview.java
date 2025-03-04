@@ -50,10 +50,8 @@ public class OpenAiCodeReview {
 	public static void main(String[] args) throws Exception {
 
 		GitCommand gitCommand = new GitCommand(
-//				getEnv("CODE_REVIEW_LOG_URL"),
-				"https://github.com/xiaozhou524/openai-code-review-log",
-				"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",
-//				getEnv("CODE_TOKEN"),
+				getEnv("GITHUB_REVIEW_LOG_URI"),
+				getEnv("GITHUB_TOKEN"),
 				getEnv("COMMIT_PROJECT"),
 				getEnv("COMMIT_BRANCH"),
 				getEnv("COMMIT_AUTHOR"),
@@ -61,10 +59,8 @@ public class OpenAiCodeReview {
 		);
 
 		IOpenAI openAI = new ChatGLM(
-//				getEnv("CHATGLM_AIPHOST"),
-//				getEnv("CHATGLM_AIPKEYSECRET")
-				"https://open.bigmodel.cn/api/paas/v4/chat/completions",
-				"336d5b9823404b2ea94dd64f623f672f.2L79s4Z5SfgnKWym"
+				getEnv("CHATGLM_APIHOST"),
+				getEnv("CHATGLM_APIKEYSECRET")
 		);
 
 		WeiXin weiXin = new WeiXin(
