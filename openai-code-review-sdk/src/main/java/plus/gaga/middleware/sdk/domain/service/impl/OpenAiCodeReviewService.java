@@ -1,6 +1,5 @@
 package plus.gaga.middleware.sdk.domain.service.impl;
 
-import plus.gaga.middleware.sdk.domain.model.Model;
 import plus.gaga.middleware.sdk.domain.service.AbstractOpenAiCodeReviewService;
 import plus.gaga.middleware.sdk.infrastructure.git.GitCommand;
 import plus.gaga.middleware.sdk.infrastructure.openai.IOpenAI;
@@ -30,18 +29,8 @@ public class OpenAiCodeReviewService extends AbstractOpenAiCodeReviewService {
 		// 2. 开始评审代码
 
 		// openGLM
-		ChatCompletionRequestDTO chatCompletionRequestDTO = new ChatCompletionRequestDTO();
-		chatCompletionRequestDTO.setModel(Model.GLM_4_FLASH.getCode());
-		chatCompletionRequestDTO.setMessages(new ArrayList<ChatCompletionRequestDTO.Prompt>() {
-			{
-				add(new ChatCompletionRequestDTO.Prompt("user", "你是一个高级编程架构师，精通各类场景方案、架构设计和编程语言请，请您根据git diff记录，对代码做出评审。代码为: "));
-				add(new ChatCompletionRequestDTO.Prompt("user", diffCode));
-			}
-		});
-
-		// deepSeek
 //		ChatCompletionRequestDTO chatCompletionRequestDTO = new ChatCompletionRequestDTO();
-//		chatCompletionRequestDTO.setModel("deepseek-chat");
+//		chatCompletionRequestDTO.setModel(Model.GLM_4_FLASH.getCode());
 //		chatCompletionRequestDTO.setMessages(new ArrayList<ChatCompletionRequestDTO.Prompt>() {
 //			{
 //				add(new ChatCompletionRequestDTO.Prompt("user", "你是一个高级编程架构师，精通各类场景方案、架构设计和编程语言请，请您根据git diff记录，对代码做出评审。代码为: "));
@@ -49,8 +38,18 @@ public class OpenAiCodeReviewService extends AbstractOpenAiCodeReviewService {
 //			}
 //		});
 
-
+		// deepSeek
+		ChatCompletionRequestDTO chatCompletionRequestDTO = new ChatCompletionRequestDTO();
+		chatCompletionRequestDTO.setModel("deepseek-chat");
+		chatCompletionRequestDTO.setMessages(new ArrayList<ChatCompletionRequestDTO.Prompt>() {
+			{
+				add(new ChatCompletionRequestDTO.Prompt("user", "你是一个高级编程架构师，精通各类场景方案、架构设计和编程语言请，请您根据git diff记录，对代码做出评审。代码为: "));
+				add(new ChatCompletionRequestDTO.Prompt("user", diffCode));
+			}
+		});
 		ChatCompletionSyncResponseDTO responseDTO = openAI.completions(chatCompletionRequestDTO);
+
+
 		ChatCompletionSyncResponseDTO.Message message = responseDTO.getChoices().get(0).getMessage();
 		return message.getContent();
 	}
