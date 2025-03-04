@@ -80,14 +80,14 @@ public class ApiTest {
 
 	@Test
 	public void test_wx() {
-		String accessToken = WXAccessTokenUtils.getAccessToken();
-
-		Message message = new Message();
-		message.put("project", "评审");
-		message.put("review", "新加功能");
-
-		String url = String.format("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s", accessToken);
-		sendPostRequest(url, JSON.toJSONString(message));
+//		String accessToken = WXAccessTokenUtils.getAccessToken();
+//
+//		Message message = new Message();
+//		message.put("project", "评审");
+//		message.put("review", "新加功能");
+//
+//		String url = String.format("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s", accessToken);
+//		sendPostRequest(url, JSON.toJSONString(message));
 	}
 
 	public static class Message {

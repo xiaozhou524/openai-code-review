@@ -13,7 +13,7 @@ public class ApiTest {
 
     @Test
     public void test() {
-        System.out.println(Integer.parseInt("ppp"));
+        System.out.println(Integer.parseInt("增加deepseek"));
     }
 
 }

@@ -13,6 +13,7 @@ import plus.gaga.middleware.sdk.infrastructure.openai.dto.ChatCompletionRequestD
 import plus.gaga.middleware.sdk.infrastructure.openai.dto.ChatCompletionSyncResponseDTO;
 import plus.gaga.middleware.sdk.domain.model.Model;
 import plus.gaga.middleware.sdk.infrastructure.openai.impl.ChatGLM;
+import plus.gaga.middleware.sdk.infrastructure.openai.impl.DeepSeekClient;
 import plus.gaga.middleware.sdk.infrastructure.weixin.WeiXin;
 import plus.gaga.middleware.sdk.types.utils.BearerTokenUtils;
 import plus.gaga.middleware.sdk.types.utils.WXAccessTokenUtils;
@@ -58,9 +59,14 @@ public class OpenAiCodeReview {
 				getEnv("COMMIT_MESSAGE")
 		);
 
-		IOpenAI openAI = new ChatGLM(
-				getEnv("CHATGLM_APIHOST"),
-				getEnv("CHATGLM_APIKEYSECRET")
+//		IOpenAI openAI = new ChatGLM(
+//				getEnv("CHATGLM_APIHOST"),
+//				getEnv("CHATGLM_APIKEYSECRET")
+//		);
+
+		IOpenAI DeepSeek = new DeepSeekClient(
+				"https://api.deepseek.com/chat/completions",
+				"sk-39a453e30a36490c9e9b734b72b20a26"
 		);
 
 		WeiXin weiXin = new WeiXin(
@@ -70,7 +76,7 @@ public class OpenAiCodeReview {
 				getEnv("WEIXIN_TEMPLATE_ID")
 		);
 
-		OpenAiCodeReviewService openAiCodeReviewService = new OpenAiCodeReviewService(gitCommand, openAI, weiXin);
+		OpenAiCodeReviewService openAiCodeReviewService = new OpenAiCodeReviewService(gitCommand, DeepSeek, weiXin);
 		openAiCodeReviewService.exec();
 
 		logger.info("openai-code-review done!");

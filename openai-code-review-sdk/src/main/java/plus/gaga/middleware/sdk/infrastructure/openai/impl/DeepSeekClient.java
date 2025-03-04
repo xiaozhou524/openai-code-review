@@ -4,7 +4,6 @@ import com.alibaba.fastjson2.JSON;
 import plus.gaga.middleware.sdk.infrastructure.openai.IOpenAI;
 import plus.gaga.middleware.sdk.infrastructure.openai.dto.ChatCompletionRequestDTO;
 import plus.gaga.middleware.sdk.infrastructure.openai.dto.ChatCompletionSyncResponseDTO;
-import plus.gaga.middleware.sdk.types.utils.BearerTokenUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -13,27 +12,24 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class ChatGLM implements IOpenAI {
+public class DeepSeekClient implements IOpenAI {
 
 	private final String apiHost;
 
-	private final String apiKeySecret;
+	private final String apiKey;
 
-	public ChatGLM(String apiHost, String apiKeySecret) {
+	public DeepSeekClient(String apiHost, String apiKey) {
 		this.apiHost = apiHost;
-		this.apiKeySecret = apiKeySecret;
+		this.apiKey = apiKey;
 	}
 
 	@Override
 	public ChatCompletionSyncResponseDTO completions(ChatCompletionRequestDTO requestDTO) throws Exception {
-		String token = BearerTokenUtils.getToken(apiKeySecret);
-
 		URL url = new URL(apiHost);
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestMethod("POST");
-		connection.setRequestProperty("Authorization", "Bearer " + token);
+		connection.setRequestProperty("Authorization", "Bearer " + apiKey);
 		connection.setRequestProperty("Content-Type", "application/json");
-		connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
 		connection.setDoOutput(true);
 
 		try (OutputStream os = connection.getOutputStream()) {
@@ -50,8 +46,6 @@ public class ChatGLM implements IOpenAI {
 
 		in.close();
 		connection.disconnect();
-
-//		System.out.println("评审结果：" + content);
 
 		return JSON.parseObject(content.toString(), ChatCompletionSyncResponseDTO.class);
 	}
