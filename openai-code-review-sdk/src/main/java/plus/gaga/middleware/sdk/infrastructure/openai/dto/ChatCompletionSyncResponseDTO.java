@@ -1,8 +1,8 @@
-package plus.gaga.middleware.sdk.domain.model;
+package plus.gaga.middleware.sdk.infrastructure.openai.dto;
 
 import java.util.List;
 
-public class ChatCompletionSyncResponse {
+public class ChatCompletionSyncResponseDTO {
 
     private List<Choice> choices;
 
