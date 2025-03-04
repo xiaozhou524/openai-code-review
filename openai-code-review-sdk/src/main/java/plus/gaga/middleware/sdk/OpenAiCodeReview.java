@@ -61,8 +61,10 @@ public class OpenAiCodeReview {
 		);
 
 		IOpenAI openAI = new ChatGLM(
-				getEnv("CHATGLM_AIPHOST"),
-				getEnv("CHATGLM_AIPKEYSECRET")
+//				getEnv("CHATGLM_AIPHOST"),
+//				getEnv("CHATGLM_AIPKEYSECRET")
+				"https://open.bigmodel.cn/api/paas/v4/chat/completions",
+				"336d5b9823404b2ea94dd64f623f672f.2L79s4Z5SfgnKWym"
 		);
 
 		WeiXin weiXin = new WeiXin(
